@@ -1,5 +1,4 @@
 .gitignore
-.openapi-generator-ignore
 .travis.yml
 README.md
 api/openapi.yaml
@@ -46,11 +45,3 @@ src/main/java/org/openapitools/client/model/ComposedOneOfInlineValidation.java
 src/main/java/org/openapitools/client/model/ObjectModelWithAddPropsInProps.java
 src/main/java/org/openapitools/client/model/ObjectModelWithRefAddPropsInProps.java
 src/main/java/org/openapitools/client/model/ObjectWithValidationsInArrayPropItems.java
-src/test/java/org/openapitools/client/api/AdditionalPropertiesApiTest.java
-src/test/java/org/openapitools/client/api/ItemsApiTest.java
-src/test/java/org/openapitools/client/model/ComposedAllOfInlineValidationTest.java
-src/test/java/org/openapitools/client/model/ComposedAnyOfInlineValidationTest.java
-src/test/java/org/openapitools/client/model/ComposedOneOfInlineValidationTest.java
-src/test/java/org/openapitools/client/model/ObjectModelWithAddPropsInPropsTest.java
-src/test/java/org/openapitools/client/model/ObjectModelWithRefAddPropsInPropsTest.java
-src/test/java/org/openapitools/client/model/ObjectWithValidationsInArrayPropItemsTest.java
