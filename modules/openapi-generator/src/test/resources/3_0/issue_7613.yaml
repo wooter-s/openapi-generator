@@ -76,7 +76,7 @@ paths:
     post:
       tags:
         - additional_properties
-      operationId: arrayWithValidationsInItems
+      operationId: arrayWithValidationsInItemsRef
       parameters:
         - name: additionalPropertiesUnset
           in: query
@@ -127,7 +127,7 @@ paths:
     post:
       tags:
         - additional_properties
-      operationId: arrayWithValidationsInItems
+      operationId: arrayWithValidationsInItems2
       parameters:
         - name: additionalPropertiesUnset
           in: query

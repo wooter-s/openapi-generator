@@ -1,0 +1,10 @@
+generatorName: java
+outputDir: samples/openapi3/client/petstore/java/jersey2-issue7613
+library: jersey2
+inputSpec: modules/openapi-generator/src/test/resources/3_0/issue_7613.yaml
+templateDir: modules/openapi-generator/src/main/resources/Java
+additionalProperties:
+  artifactId: petstore-openapi3-jersey2-java8-test
+  hideGenerationTimestamp: true
+  dateLibrary: java8
+  disallowAdditionalPropertiesIfNotPresent: false

@@ -1,0 +1,292 @@
+openapi: 3.0.1
+info:
+  description: sample spec
+  license:
+    name: Apache-2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  title: OpenAPI Petstore
+  version: 1.0.0
+servers:
+- url: http://petstore.swagger.io:80/v2
+tags:
+- description: Everything about your Pets
+  name: items
+paths:
+  /ref_array_with_validations_in_items/{items}:
+    post:
+      operationId: refArrayWithValidationsInItems
+      parameters:
+      - explode: false
+        in: path
+        name: items
+        required: true
+        schema:
+          $ref: '#/components/schemas/ArrayWithValidationsInItems'
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ArrayWithValidationsInItems'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArrayWithValidationsInItems'
+          description: success
+      tags:
+      - items
+      x-contentType: application/json
+      x-accepts: application/json
+  /array_with_validations_in_items/{items}:
+    post:
+      operationId: arrayWithValidationsInItems
+      parameters:
+      - explode: false
+        in: path
+        name: items
+        required: true
+        schema:
+          items:
+            format: int64
+            maximum: 7
+            type: integer
+          type: array
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              items:
+                format: int64
+                maximum: 7
+                type: integer
+              type: array
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  format: int64
+                  maximum: 7
+                  type: integer
+                type: array
+          description: success
+      tags:
+      - items
+      x-contentType: application/json
+      x-accepts: application/json
+  /ref_additional_properties/:
+    post:
+      operationId: arrayWithValidationsInItemsRef
+      parameters:
+      - explode: true
+        in: query
+        name: additionalPropertiesUnset
+        required: true
+        schema:
+          $ref: '#/components/schemas/AdditionalPropertiesUnset'
+        style: form
+      - explode: true
+        in: query
+        name: additionalPropertiesTrue
+        required: true
+        schema:
+          $ref: '#/components/schemas/AdditionalPropertiesTrue'
+        style: form
+      - explode: true
+        in: query
+        name: additionalPropertiesFalse
+        required: true
+        schema:
+          $ref: '#/components/schemas/AdditionalPropertiesFalse'
+        style: form
+      - explode: true
+        in: query
+        name: additionalPropertiesSchema
+        required: true
+        schema:
+          $ref: '#/components/schemas/AdditionalPropertiesSchema'
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdditionalPropertiesUnset'
+          description: "200"
+        "201":
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/AdditionalPropertiesTrue'
+          description: "201"
+        "202":
+          content:
+            application/x-www-form-urlencoded:
+              schema:
+                $ref: '#/components/schemas/AdditionalPropertiesFalse'
+          description: "202"
+        "203":
+          content:
+            application/*:
+              schema:
+                $ref: '#/components/schemas/AdditionalPropertiesSchema'
+          description: "203"
+      tags:
+      - additional_properties
+      x-accepts: application/json
+  /additional_properties/:
+    post:
+      operationId: arrayWithValidationsInItems2
+      parameters:
+      - explode: true
+        in: query
+        name: additionalPropertiesUnset
+        required: true
+        schema:
+          type: object
+        style: form
+      - explode: true
+        in: query
+        name: additionalPropertiesTrue
+        required: true
+        schema:
+          additionalProperties: true
+          type: object
+        style: form
+      - explode: true
+        in: query
+        name: additionalPropertiesFalse
+        required: true
+        schema:
+          additionalProperties: false
+          type: object
+        style: form
+      - explode: true
+        in: query
+        name: additionalPropertiesSchema
+        required: true
+        schema:
+          additionalProperties:
+            type: string
+          type: object
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: object
+          description: "200"
+        "201":
+          content:
+            application/json:
+              schema:
+                additionalProperties: true
+                type: object
+          description: "201"
+        "202":
+          content:
+            application/json:
+              schema:
+                additionalProperties: false
+                type: object
+          description: "202"
+        "203":
+          content:
+            application/json:
+              schema:
+                additionalProperties:
+                  type: string
+                type: object
+          description: "203"
+      tags:
+      - additional_properties
+      x-accepts: application/json
+components:
+  schemas:
+    ArrayWithValidationsInItems:
+      items:
+        format: int64
+        maximum: 7
+        type: integer
+      type: array
+    ObjectWithValidationsInArrayPropItems:
+      properties:
+        arrayProp:
+          items:
+            format: int64
+            maximum: 7
+            type: integer
+          type: array
+      type: object
+    ObjectWithValidationsInAdditionalProperties:
+      additionalProperties:
+        format: int64
+        maximum: 7
+        type: integer
+      type: object
+    ComposedOneOfInlineValidation:
+      oneOf:
+      - format: int64
+        maximum: 7
+        type: integer
+    ComposedAnyOfInlineValidation:
+      anyOf:
+      - format: int64
+        maximum: 7
+        type: integer
+    ComposedAllOfInlineValidation:
+      allOf:
+      - format: int64
+        maximum: 7
+        type: integer
+    AdditionalPropertiesUnset:
+      type: object
+    AdditionalPropertiesTrue:
+      additionalProperties: true
+      type: object
+    AdditionalPropertiesFalse:
+      additionalProperties: false
+      type: object
+    AdditionalPropertiesSchema:
+      additionalProperties:
+        type: string
+      type: object
+    ObjectModelWithRefAddPropsInProps:
+      properties:
+        map_with_additional_properties_unset:
+          type: object
+        map_with_additional_properties_true:
+          additionalProperties: true
+          type: object
+        map_with_additional_properties_false:
+          additionalProperties: false
+          type: object
+        map_with_additional_properties_schema:
+          additionalProperties:
+            type: string
+          type: object
+      type: object
+    ObjectModelWithAddPropsInProps:
+      properties:
+        map_with_additional_properties_unset:
+          type: object
+        map_with_additional_properties_true:
+          additionalProperties: true
+          type: object
+        map_with_additional_properties_false:
+          additionalProperties: false
+          type: object
+        map_with_additional_properties_schema:
+          additionalProperties:
+            type: string
+          type: object
+      type: object
+  securitySchemes: {}
+
