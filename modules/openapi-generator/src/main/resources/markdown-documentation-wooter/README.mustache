@@ -1,0 +1,23 @@
+# {{appName}}
+
+{{#generateApiDocs}}
+
+All URIs are relative to *{{{basePath}}}*
+
+Class | Method | HTTP request | Description
+------------ | ------------- | ------------- | -------------
+{{#apiInfo}}{{#apis}}{{#operations}}{{#operation}}*{{classname}}* | [**{{operationId}}**](#{{summary}}) | **{{httpMethod}}** {{path}} | {{#summary}}{{{summary}}}{{/summary}}{{^summary}}{{{notes}}}{{/summary}}
+{{/operation}}{{/operations}}{{/apis}}{{/apiInfo}}
+{{/generateApiDocs}}
+
+
+## 接口
+{{#apiInfo}}
+{{#apis}}
+{{ > api }}
+{{/apis}}
+{{/apiInfo}}
+
+
+## 模型
+{{ > model }}

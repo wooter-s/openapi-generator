@@ -1,0 +1,15 @@
+{{#models}}
+{{#model}}
+### {{{classname}}}
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+{{#parent}}
+{{#parentVars}}
+**{{name}}** | {{#isPrimitiveType}}**{{dataType}}**{{/isPrimitiveType}}{{^isPrimitiveType}}**{{dataType}}**{{/isPrimitiveType}} | {{description}} | {{^required}}[optional] {{/required}}{{#readOnly}}[readonly] {{/readOnly}}{{#defaultValue}}{{{.}}}{{/defaultValue}}
+{{/parentVars}}
+{{/parent}}
+{{#vars}}**{{name}}** | {{#isPrimitiveType}}**{{dataType}}**{{/isPrimitiveType}}{{^isPrimitiveType}}**{{dataType}}**{{/isPrimitiveType}} | {{description}} | {{^required}}[optional] {{/required}}{{#readOnly}}[readonly] {{/readOnly}}{{#defaultValue}}{{{.}}}{{/defaultValue}}
+{{/vars}}
+    {{/model}}
+{{/models}}
