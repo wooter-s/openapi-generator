@@ -575,36 +575,36 @@ public class DefaultGenerator implements Generator {
             try {
                 List<CodegenOperation> ops = paths.get(tag);
                 ops.sort((one, another) -> ObjectUtils.compare(one.operationId, another.operationId));
-                Map<String, Object> operation = processOperations(config, tag, ops, allModels);
+                Map<String, Object> apiOperation = processApiOperations(config, tag, ops, allModels);
                 URL url = URLPathUtils.getServerURL(openAPI, config.serverVariableOverrides());
-                operation.put("basePath", basePath);
-                operation.put("basePathWithoutHost", config.encodePath(url.getPath()).replaceAll("/$", ""));
-                operation.put("contextPath", contextPath);
-                operation.put("baseName", tag);
-                operation.put("apiPackage", config.apiPackage());
-                operation.put("modelPackage", config.modelPackage());
-                operation.putAll(config.additionalProperties());
-                operation.put("classname", config.toApiName(tag));
-                operation.put("classVarName", config.toApiVarName(tag));
-                operation.put("importPath", config.toApiImport(tag));
-                operation.put("classFilename", config.toApiFilename(tag));
-                operation.put("strictSpecBehavior", config.isStrictSpecBehavior());
+                apiOperation.put("basePath", basePath);
+                apiOperation.put("basePathWithoutHost", config.encodePath(url.getPath()).replaceAll("/$", ""));
+                apiOperation.put("contextPath", contextPath);
+                apiOperation.put("baseName", tag);
+                apiOperation.put("apiPackage", config.apiPackage());
+                apiOperation.put("modelPackage", config.modelPackage());
+                apiOperation.putAll(config.additionalProperties());
+                apiOperation.put("classname", config.toApiName(tag));
+                apiOperation.put("classVarName", config.toApiVarName(tag));
+                apiOperation.put("importPath", config.toApiImport(tag));
+                apiOperation.put("classFilename", config.toApiFilename(tag));
+                apiOperation.put("strictSpecBehavior", config.isStrictSpecBehavior());
 
                 if (allModels == null || allModels.isEmpty()) {
-                    operation.put("hasModel", false);
+                    apiOperation.put("hasModel", false);
                 } else {
-                    operation.put("hasModel", true);
+                    apiOperation.put("hasModel", true);
                 }
 
                 if (!config.vendorExtensions().isEmpty()) {
-                    operation.put("vendorExtensions", config.vendorExtensions());
+                    apiOperation.put("vendorExtensions", config.vendorExtensions());
                 }
 
                 // process top-level x-group-parameters
                 if (config.vendorExtensions().containsKey("x-group-parameters")) {
                     boolean isGroupParameters = Boolean.parseBoolean(config.vendorExtensions().get("x-group-parameters").toString());
 
-                    Map<String, Object> objectMap = (Map<String, Object>) operation.get("operations");
+                    Map<String, Object> objectMap = (Map<String, Object>) apiOperation.get("operations");
                     @SuppressWarnings("unchecked")
                     List<CodegenOperation> operations = (List<CodegenOperation>) objectMap.get("operation");
                     for (CodegenOperation op : operations) {
@@ -619,18 +619,18 @@ public class DefaultGenerator implements Generator {
                 if (this.config.additionalProperties().containsKey(CodegenConstants.SORT_PARAMS_BY_REQUIRED_FLAG)) {
                     sortParamsByRequiredFlag = Boolean.parseBoolean(this.config.additionalProperties().get(CodegenConstants.SORT_PARAMS_BY_REQUIRED_FLAG).toString());
                 }
-                operation.put("sortParamsByRequiredFlag", sortParamsByRequiredFlag);
+                apiOperation.put("sortParamsByRequiredFlag", sortParamsByRequiredFlag);
 
                 /* consumes, produces are no longer defined in OAS3.0
                 processMimeTypes(swagger.getConsumes(), operation, "consumes");
                 processMimeTypes(swagger.getProduces(), operation, "produces");
                 */
 
-                allOperations.add(new HashMap<>(operation));
+                allOperations.add(new HashMap<>(apiOperation));
 
                 for (String templateName : config.apiTemplateFiles().keySet()) {
                     String filename = config.apiFilename(templateName, tag);
-                    File written = processTemplateToFile(operation, templateName, filename, generateApis, CodegenConstants.APIS);
+                    File written = processTemplateToFile(apiOperation, templateName, filename, generateApis, CodegenConstants.APIS);
                     if (written != null) {
                         files.add(written);
                         if (config.isEnablePostProcessFile() && !dryRun) {
@@ -647,7 +647,7 @@ public class DefaultGenerator implements Generator {
                     if (apiTestFile.exists()) {
                         this.templateProcessor.skip(apiTestFile.toPath(), "Test files never overwrite an existing file of the same name.");
                     } else {
-                        File written = processTemplateToFile(operation, templateName, filename, generateApiTests, CodegenConstants.API_TESTS);
+                        File written = processTemplateToFile(apiOperation, templateName, filename, generateApiTests, CodegenConstants.API_TESTS);
                         if (written != null) {
                             files.add(written);
                             if (config.isEnablePostProcessFile() && !dryRun) {
@@ -660,7 +660,7 @@ public class DefaultGenerator implements Generator {
                 // to generate api documentation files
                 for (String templateName : config.apiDocTemplateFiles().keySet()) {
                     String filename = config.apiDocFilename(templateName, tag);
-                    File written = processTemplateToFile(operation, templateName, filename, generateApiDocumentation, CodegenConstants.API_DOCS);
+                    File written = processTemplateToFile(apiOperation, templateName, filename, generateApiDocumentation, CodegenConstants.API_DOCS);
                     if (written != null) {
                         files.add(written);
                         if (config.isEnablePostProcessFile() && !dryRun) {
@@ -1148,8 +1148,8 @@ public class DefaultGenerator implements Generator {
     }
 
     @SuppressWarnings("unchecked")
-    private Map<String, Object> processOperations(CodegenConfig config, String tag, List<CodegenOperation> ops, List<Object> allModels) {
-        Map<String, Object> operations = new HashMap<>();
+    private Map<String, Object> processApiOperations(CodegenConfig config, String tag, List<CodegenOperation> ops, List<Object> allModels) {
+        Map<String, Object> apiOperations = new HashMap<>();
         Map<String, Object> objs = new HashMap<>();
         objs.put("classname", config.toApiName(tag));
         objs.put("pathPrefix", config.toApiVarName(tag));
@@ -1167,8 +1167,8 @@ public class DefaultGenerator implements Generator {
         }
         objs.put("operation", ops);
 
-        operations.put("operations", objs);
-        operations.put("package", config.apiPackage());
+        apiOperations.put("operations", objs);
+        apiOperations.put("package", config.apiPackage());
 
         Set<String> allImports = new TreeSet<>();
         for (CodegenOperation op : ops) {
@@ -1179,15 +1179,15 @@ public class DefaultGenerator implements Generator {
         Set<Map<String, String>> imports = toImportsObjects(mappings);
 
         //Some codegen implementations rely on a list interface for the imports
-        operations.put("imports", imports.stream().collect(Collectors.toList()));
+        apiOperations.put("imports", imports.stream().collect(Collectors.toList()));
 
         // add a flag to indicate whether there's any {{import}}
         if (imports.size() > 0) {
-            operations.put("hasImport", true);
+            apiOperations.put("hasImport", true);
         }
 
-        config.postProcessOperationsWithModels(operations, allModels);
-        return operations;
+        config.postProcessOperationsWithModels(apiOperations, allModels);
+        return apiOperations;
     }
 
     /**

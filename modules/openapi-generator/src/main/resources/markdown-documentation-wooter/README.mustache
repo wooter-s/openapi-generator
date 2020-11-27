@@ -14,10 +14,19 @@ Class | Method | HTTP request | Description
 ## 接口
 {{#apiInfo}}
 {{#apis}}
-{{ > api }}
+{{> api}}
 {{/apis}}
 {{/apiInfo}}
 
 
 ## 模型
-{{ > model }}
+{{#models}}
+{{#model}}
+### {{{name}}}
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+{{#vars}}**{{name}}** |{{#isArray}}[**{{dataType}}<{{complexType}}>**](#{{complexType}}){{/isArray}}{{#isModel}}[**{{dataType}}**](#{{complexType}}){{/isModel}}{{^isArray}}{{^isModel}}**{{dataType}}**{{/isModel}}{{/isArray}} |{{description}} | {{^required}}[optional] {{/required}}{{#readOnly}}[readonly] {{/readOnly}}{{#defaultValue}}{{{.}}}{{/defaultValue}}
+{{/vars}}
+{{/model}}
+{{/models}}

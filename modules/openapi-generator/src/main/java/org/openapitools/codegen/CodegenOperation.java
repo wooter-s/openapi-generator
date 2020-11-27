@@ -29,8 +29,9 @@ public class CodegenOperation {
             isArray, isMultipart,
             isResponseBinary = false, isResponseFile = false, hasReference = false,
             isRestfulIndex, isRestfulShow, isRestfulCreate, isRestfulUpdate, isRestfulDestroy,
-            isRestful, isDeprecated, isCallbackRequest, uniqueItems;
-    public String path, operationId, returnType, returnFormat, httpMethod, returnBaseType,
+            isRestful, isDeprecated, isCallbackRequest, uniqueItems, isGet = false, isPut = false, isPost = false, isDelete = false, isPatch;
+    public String path, operationId, returnType, returnFormat,
+            httpMethod, returnBaseType,
             returnContainer, summary, unescapedNotes, notes, baseName, defaultResponse; 
     public CodegenDiscriminator discriminator;
     public List<Map<String, String>> consumes, produces, prioritizedContentTypes;
@@ -59,7 +60,7 @@ public class CodegenOperation {
     public String operationIdLowerCase; // for markdown documentation
     public String operationIdCamelCase; // for class names
     public String operationIdSnakeCase;
-
+    public CodegenProperty responseDataModel;
     /**
      * Check if there's at least one parameter
      *

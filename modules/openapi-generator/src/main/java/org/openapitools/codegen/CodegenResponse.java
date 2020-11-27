@@ -69,6 +69,7 @@ public class CodegenResponse implements IJsonSchemaValidationProperties {
     private Integer minLength;
     private boolean exclusiveMinimum;
     private boolean exclusiveMaximum;
+    private CodegenModel responseModel;
     private String minimum;
     private String maximum;
     public String pattern;
@@ -77,7 +78,6 @@ public class CodegenResponse implements IJsonSchemaValidationProperties {
     public CodegenProperty additionalProperties;
     public List<CodegenProperty> vars = new ArrayList<CodegenProperty>(); // all properties (without parent's properties)
     public List<CodegenProperty> requiredVars = new ArrayList<CodegenProperty>();
-
     @Override
     public int hashCode() {
         return Objects.hash(headers, code, message, examples, dataType, baseType, containerType, hasHeaders,
@@ -355,6 +355,14 @@ public class CodegenResponse implements IJsonSchemaValidationProperties {
     @Override
     public void setRequiredVars(List<CodegenProperty> requiredVars) {
         this.requiredVars = requiredVars;
+    }
+
+    public void setResponseModel(CodegenModel responseModel) {
+        this.responseModel = responseModel;
+    }
+
+    public CodegenModel getResponseModel() {
+        return responseModel;
     }
 
     @Override

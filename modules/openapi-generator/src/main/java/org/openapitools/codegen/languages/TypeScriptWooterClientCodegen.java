@@ -142,13 +142,13 @@ public class TypeScriptWooterClientCodegen extends AbstractTypeScriptClientCodeg
         supportingFiles
                 .add(new SupportingFile("apis.mustache", apiPackage().replace('.', File.separatorChar), "api.ts"));
         supportingFiles.add(new SupportingFile("index.mustache", getIndexDirectory(), "index.ts"));
-        supportingFiles.add(new SupportingFile("api.module.mustache", getIndexDirectory(), "api.module.ts"));
-        supportingFiles.add(new SupportingFile("configuration.mustache", getIndexDirectory(), "configuration.ts"));
-        supportingFiles.add(new SupportingFile("variables.mustache", getIndexDirectory(), "variables.ts"));
-        supportingFiles.add(new SupportingFile("encoder.mustache", getIndexDirectory(), "encoder.ts"));
-        supportingFiles.add(new SupportingFile("gitignore", "", ".gitignore"));
-        supportingFiles.add(new SupportingFile("git_push.sh.mustache", "", "git_push.sh"));
-        supportingFiles.add(new SupportingFile("README.mustache", getIndexDirectory(), "README.md"));
+//        supportingFiles.add(new SupportingFile("api.module.mustache", getIndexDirectory(), "api.module.ts"));
+//        supportingFiles.add(new SupportingFile("configuration.mustache", getIndexDirectory(), "configuration.ts"));
+//        supportingFiles.add(new SupportingFile("variables.mustache", getIndexDirectory(), "variables.ts"));
+//        supportingFiles.add(new SupportingFile("encoder.mustache", getIndexDirectory(), "encoder.ts"));
+//        supportingFiles.add(new SupportingFile("gitignore", "", ".gitignore"));
+//        supportingFiles.add(new SupportingFile("git_push.sh.mustache", "", "git_push.sh"));
+//        supportingFiles.add(new SupportingFile("README.mustache", getIndexDirectory(), "README.md"));
 
         // determine NG version
         SemVer ngVersion;
@@ -390,8 +390,23 @@ public class TypeScriptWooterClientCodegen extends AbstractTypeScriptClientCodeg
                 hasSomeFormParams = true;
             }
             op.httpMethod = op.httpMethod.toLowerCase(Locale.ENGLISH);
-
-
+            for(Object model : allModels) {
+                Map<String, Object> tempModel = (Map<String, Object>) model;
+                if (tempModel != null) {
+                    CodegenModel modelItem = (CodegenModel) tempModel.get("model");
+                    if (modelItem != null) {
+                        String classname = modelItem.classname;
+                        if (classname != null && classname.equals(op.returnType)) {
+                            for(CodegenProperty var : modelItem.vars) {
+                                if (var != null &&var.name.equals("data")) {
+                                    op.responseDataModel = var;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
             // Prep a string buffer where we're going to set up our new version of the string.
             StringBuilder pathBuffer = new StringBuilder();
             StringBuilder parameterName = new StringBuilder();

@@ -1,12 +1,11 @@
 {{#apiInfo}}
+export const API = {
 {{#apis}}
 {{#operations}}
-export * from './{{ classFilename }}';
-import { {{ classname }} } from './{{ classFilename }}';
+{{#operation}}
+    {{operationIdCamelCase}}: '{{{path}}}',
+{{/operation}}
 {{/operations}}
-{{#withInterfaces}}
-export * from './{{ classFilename }}Interface'
-{{/withInterfaces}}
 {{/apis}}
-export const APIS = [{{#apis}}{{#operations}}{{ classname }}{{/operations}}{{^-last}}, {{/-last}}{{/apis}}];
+}
 {{/apiInfo}}

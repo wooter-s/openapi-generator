@@ -3738,6 +3738,7 @@ public class DefaultCodegen implements CodegenConfig {
                     imports.add(typeMapping.get(r.containerType));
                 }
 
+                r.setResponseModel(null);
                 op.responses.add(r);
                 if (Boolean.TRUE.equals(r.isBinary) && Boolean.TRUE.equals(r.is2xx) && Boolean.FALSE.equals(op.isResponseBinary)) {
                     op.isResponseBinary = Boolean.TRUE;
@@ -3883,6 +3884,21 @@ public class DefaultCodegen implements CodegenConfig {
 
         op.bodyParam = bodyParam;
         op.httpMethod = httpMethod.toUpperCase(Locale.ROOT);
+        if (op.httpMethod.equals("GET")) {
+            op.isGet = true;
+        }
+        if (op.httpMethod.equals("PUT")) {
+            op.isPut = true;
+        }
+        if (op.httpMethod.equals("POST")) {
+            op.isPost = true;
+        }
+        if (op.httpMethod.equals("DELETE")) {
+            op.isDelete = true;
+        }
+        if (op.httpMethod.equals("PATCH")) {
+            op.isPatch = true;
+        }
 
         // move "required" parameters in front of "optional" parameters
         if (sortParamsByRequiredFlag) {
